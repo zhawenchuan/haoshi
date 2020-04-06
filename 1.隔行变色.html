@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="reset.min.css">
+	<style>
+		.newsItem {
+			margin: 20px auto;
+			width: 500px;
+		}
+
+		.newsItem li {
+			line-height: 40px;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+			border-bottom: 1px dashed lightgray;
+		}
+
+
+		/* 奇偶行变色，鼠标滑过有高亮选中效果，鼠标离开回归原本的颜色 => 真实项目中一定是基于CSS3完成的 */
+		/* .newsItem li:nth-child(even) {
+			background: lightcyan;
+		}
+
+		.newsItem li:hover {
+			background: lightcoral;
+		} */
+	</style>
+</head>
+
+<body>
+	<ul class="newsItem" id="newsItem">
+		<li>欢迎大家来到珠峰培训学习</li>
+		<li>我们期望通过一门技术的学习，让大家养成成功者应该具备的基本素质</li>
+		<li>课程中涉及基础知识、大量企业原版实战、各种底层源码的研究</li>
+		<li>学会60%找份工作没啥问题，学会80%薪资一万大几，学会100%，你想去哪和我说，我给你推！</li>
+		<li>大家要坚信：未来的生活是由自己现在的努力来决定的，所以坚持四个月！</li>
+		<li>我们课程四个月，前两周免费学，考试通过，报名缴费，正式课前两周可无条件退费</li>
+	</ul>
+
+	<!-- IMPORT JS -->
+	<script>
+		var newsItem = document.getElementById('newsItem'),
+			itemList = newsItem.getElementsByTagName('li');
+
+		//===========基于LET解决（原理上和闭包类似）
+		/* for (let i = 0; i < itemList.length; i++) {
+			let item = itemList[i],
+				bg = '#FFF';
+			i % 2 === 1 ? bg = 'lightcyan' : null;
+			item.style.backgroundColor = bg;
+			item.onmouseover = function () {
+				item.style.backgroundColor = 'lightcoral';
+			};
+			item.onmouseout = function () {
+				item.style.backgroundColor = bg;
+			};
+		} */
+
+		//=============基于闭包解决（没有兼容性）  正式课第一周讲
+		/* for (var i = 0; i < itemList.length; i++) {
+			(function (i) {
+				var item = itemList[i],
+					bg = '#FFF';
+				i % 2 === 1 ? bg = 'lightcyan' : null;
+				item.style.backgroundColor = bg;
+				item.onmouseover = function () {
+					item.style.backgroundColor = 'lightcoral';
+				};
+				item.onmouseout = function () {
+					item.style.backgroundColor = bg;
+				};
+			})(i);
+		} */
+
+		//===============基于自定义属性解决（没有兼容性）
+		for (var i = 0; i < itemList.length; i++) {
+			var item = itemList[i],
+				bg = '#FFF';
+			i % 2 === 1 ? bg = 'lightcyan' : null;
+			item.style.backgroundColor = bg;
+			// 把当前LI的背景颜色赋值给LI元素对象的自定义属性
+			item.MyBg = bg;
+
+			item.onmouseover = function () {
+				// this是内置的关键词：他存储的就是当前操作谁就是谁
+				this.style.backgroundColor = 'lightcoral';
+			};
+			item.onmouseout = function () {
+				// 此处需要知道之前LI的背景颜色:在后面的某一个操作中，我们需要知道之前的一些信息，此时我们基于自定义属性方案（在最开始循环的时候，我们把当前LI的背景颜色基于自定义属性的方式，赋值给LI元素对象（堆内存），后期需要的时候直接从自定义属性中获取到即可）
+				this.style.backgroundColor = this.MyBg;
+			};
+		}
+
+		// ======================下面鼠标滑过效果是不行的
+		/* // 循环LI集合中的每一项，控制每一项的背景色和滑过需要处理的操作
+		for (var i = 0; i < itemList.length; i++) {
+			// item:每一轮循环要操作的这个LI元素对象
+			// i:当前操作LI的索引
+			// i % 2 === 1:索引是奇数，代表当前LI是偶数行
+			// bg:存储当前行的背景颜色
+			var item = itemList[i],
+				bg = '#FFF';
+			i % 2 === 1 ? bg = 'lightcyan' : null;
+			item.style.backgroundColor = bg;
+
+			// 控制每个LI，鼠标滑过显示高亮颜色，鼠标离开回归原始颜色
+			item.onmouseover = function () {
+				// this:当前操作的这个LI（执行主体）
+				item.style.backgroundColor = 'lightcoral';
+			};
+			item.onmouseout = function () {
+				item.style.backgroundColor = bg;
+			};
+		} */
+	</script>
+</body>
+
+</html>
